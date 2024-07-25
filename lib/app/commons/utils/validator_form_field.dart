@@ -42,14 +42,14 @@ class ValidatorFormField {
           }
           break;
         case 'min':
-          final minSize = int.tryParse(parts[1] ?? '');
+          final minSize = int.tryParse(parts[1]);
           if (minSize != null && (value.length < minSize)) {
             return customErrorMessages?['min'] ??
                 'Minimum length is $minSize characters';
           }
           break;
         case 'max':
-          final maxSize = int.tryParse(parts[1] ?? '');
+          final maxSize = int.tryParse(parts[1]);
           if (maxSize != null && (value.length > maxSize)) {
             return customErrorMessages?['max'] ??
                 'Maximum length is $maxSize characters';

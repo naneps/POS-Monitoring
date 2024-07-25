@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:mvvm_getx_pattern/app/commons/theme_manager.dart';
 import 'package:mvvm_getx_pattern/app/routes/app_pages.dart';
 import 'package:mvvm_getx_pattern/app/services/app_translation.dart';
@@ -18,7 +19,8 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       getPages: AppPages.routes,
       theme: ThemeManager().themeData,
-      initialRoute: AppPages.INITIAL,
+      initialRoute:
+          GetStorage().read('token') != null ? Routes.CORE : Routes.AUTH,
     );
   }
 }

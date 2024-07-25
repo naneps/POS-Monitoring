@@ -151,7 +151,7 @@ class _InputMediaState extends State<InputMedia> {
             await picker.pickMultipleMedia(); // or any custom implementation
       }
     }
-    return pickedFiles ?? [];
+    return pickedFiles;
   }
 
   Future<XFile?> _pickSingleMedia() async {
