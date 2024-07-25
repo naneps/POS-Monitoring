@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class ThemeManager {
   Color primaryColor = const Color.fromARGB(255, 35, 85, 201);
-  Color secondaryColor = const Color.fromARGB(255, 116, 197, 255);
+  Color secondaryColor = const Color.fromARGB(255, 138, 235, 189);
   Color tertiaryColor = const Color.fromARGB(255, 255, 116, 116);
   Color backgroundColor = const Color.fromARGB(255, 252, 252, 252);
   Color textColor = const Color.fromARGB(255, 29, 29, 29);
-  Color accentColor = const Color.fromARGB(255, 68, 255, 243);
+  Color accentColor = const Color.fromARGB(255, 93, 68, 255);
   Color hintColor = Colors.grey;
   Color errorColor = Colors.red;
   Color successColor = const Color.fromARGB(255, 113, 255, 118);
@@ -20,6 +20,11 @@ class ThemeManager {
     return ThemeData(
       primaryColor: primaryColor,
       scaffoldBackgroundColor: scaffoldBackgroundColor,
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: primaryColor,
+        foregroundColor: textColor,
+      ),
+      useMaterial3: true,
       appBarTheme: AppBarTheme(
         backgroundColor: appBarBackgroundColor,
         elevation: 0,
@@ -157,6 +162,9 @@ class ThemeManager {
           backgroundColor: MaterialStateProperty.all(
             primaryColor,
           ),
+          foregroundColor: MaterialStateProperty.all(
+            Colors.white,
+          ),
           elevation: MaterialStateProperty.all(0),
           fixedSize: MaterialStateProperty.all(
             const Size(double.infinity, 40),
@@ -169,7 +177,21 @@ class ThemeManager {
           ),
         ),
       ),
-      colorScheme: ColorScheme.fromSwatch().copyWith(secondary: accentColor),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        selectedItemColor: primaryColor,
+        unselectedItemColor: textColor,
+        elevation: 0,
+        backgroundColor: scaffoldBackgroundColor,
+        type: BottomNavigationBarType.shifting,
+        landscapeLayout: BottomNavigationBarLandscapeLayout.spread,
+        selectedIconTheme: IconThemeData(
+          color: primaryColor,
+        ),
+        unselectedIconTheme: IconThemeData(
+          color: textColor,
+        ),
+        showSelectedLabels: true,
+      ),
     );
   }
 }

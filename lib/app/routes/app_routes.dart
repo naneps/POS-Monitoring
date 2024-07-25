@@ -2,17 +2,29 @@ part of 'app_pages.dart';
 // DO NOT EDIT. This is code generated via package:get_cli/get_cli.dart
 
 abstract class Routes {
-  Routes._();
-  static const TODO = _Paths.TODO;
   static const HOME = _Paths.HOME;
-  static const CHAT = _Paths.CHAT;
-  static const DOCUMENTATION = _Paths.DOCUMENTATION;
+  static const AUTH = _Paths.AUTH;
+  static const CORE = _Paths.CORE;
+  static const DASHBOARD = _Paths.DASHBOARD;
+  static const PROFILE = _Paths.PROFILE;
+  static const STOCK = _Paths.STOCK;
+  static const TRANSACTION = _Paths.TRANSACTION;
+  static const MANAGEMENT = _Paths.MANAGEMENT;
+  static const ITEM = _Paths.ITEM;
+  static const EMPLOYE = _Paths.EMPLOYEE;
+  Routes._();
 }
 
 abstract class _Paths {
-  _Paths._();
-  static const TODO = '/todo';
   static const HOME = '/home';
-  static const CHAT = '/chat';
-  static const DOCUMENTATION = '/documentation';
+  static const AUTH = '/auth';
+  static const CORE = '/core';
+  static const DASHBOARD = '/dashboard';
+  static const PROFILE = '/profile';
+  static const STOCK = '/stock';
+  static const TRANSACTION = '/transaction';
+  static const MANAGEMENT = '/management';
+  static const ITEM = '/item';
+  static const EMPLOYEE = '/employee';
+  _Paths._();
 }

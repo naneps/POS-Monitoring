@@ -5,12 +5,14 @@ class SecureInput extends StatefulWidget {
   final String? label;
   final String? initialValue;
   final void Function(String)? onChanged;
+  final void Function(String?)? onSaved;
   final String? Function(String?)? validator;
   const SecureInput({
     super.key,
     this.label = 'Password',
     this.initialValue,
     this.onChanged,
+    this.onSaved,
     this.validator,
   });
 
@@ -26,6 +28,7 @@ class _SecureInputState extends State<SecureInput> {
     return XInput(
       label: widget.label!,
       onChanged: widget.onChanged,
+      onSaved: widget.onSaved,
       initialValue: widget.initialValue,
       validator: widget.validator,
       obscureText: _obscureText,

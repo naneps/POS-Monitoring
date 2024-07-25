@@ -18,9 +18,11 @@ class XInput extends StatefulWidget {
   final EdgeInsets? contentPadding;
   final FloatingLabelBehavior? floatingLabelBehavior;
   final String? hintText;
+  final void Function(String?)? onSaved;
   const XInput({
     super.key,
     this.label,
+    this.onSaved,
     this.initialValue,
     this.validator,
     this.onChanged,
@@ -34,8 +36,10 @@ class XInput extends StatefulWidget {
     this.hintText,
     this.inputFormatters,
     this.suffixIcon,
-    this.contentPadding =
-        const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+    this.contentPadding = const EdgeInsets.symmetric(
+      vertical: 10.0,
+      horizontal: 10.0,
+    ),
   });
 
   @override
@@ -59,6 +63,7 @@ class XInputState extends State<XInput> {
       key: _formKey,
       controller: _controller,
       focusNode: _focusNode,
+      onSaved: widget.onSaved,
       validator: widget.validator,
       obscureText: widget.obscureText,
       onChanged: (value) {
