@@ -36,15 +36,16 @@ class FormLoginWidget extends GetView<AuthController> {
             ),
             const SizedBox(height: 16),
             XInput(
-              prefixIcon: Icon(MdiIcons.account),
-              label: 'username',
-              hintText: 'ahmad',
+              prefixIcon: Icon(MdiIcons.phoneOutline),
+              label: 'phone',
+              hintText: '0XXXXXXXXX',
               onSaved: (val) {
-                controller.user.value.username = val!;
+                controller.user.value.phone = val!;
               },
+              keyboardType: TextInputType.phone,
               validator: (value) {
                 if (value!.isEmpty) {
-                  return 'Please enter your username';
+                  return 'Please enter your phone number';
                 }
                 return null;
               },

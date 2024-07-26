@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ThemeManager {
+  Color infoColor = Colors.blue;
   Color primaryColor = const Color.fromARGB(255, 35, 85, 201);
   Color secondaryColor = const Color.fromARGB(255, 138, 235, 189);
   Color tertiaryColor = const Color.fromARGB(255, 255, 116, 116);
@@ -14,6 +15,7 @@ class ThemeManager {
   Color shadowColor = Colors.grey[300]!;
   Color borderColor = Colors.grey[300]!;
   Color scaffoldBackgroundColor = Colors.white;
+
   Color appBarBackgroundColor = Colors.white;
 
   ThemeData get themeData {

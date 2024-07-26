@@ -1,34 +1,47 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get/get.dart';
+import 'package:mvvm_getx_pattern/app/commons/ui/buttons/x_button.dart';
 import 'package:mvvm_getx_pattern/app/models/item_model.dart';
+import 'package:mvvm_getx_pattern/app/modules/item/bindings/item_binding.dart';
+import 'package:mvvm_getx_pattern/app/modules/item/views/create_item_view.dart';
 
 class ItemTileWidget extends StatelessWidget {
   final ItemModel item;
-  const ItemTileWidget({super.key, required this.item});
+  final VoidCallback? onDelete;
+
+  const ItemTileWidget({
+    super.key,
+    required this.item,
+    this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
-    int stock = Random().nextInt(100);
     return Slidable(
-      key: const ValueKey(0),
-      endActionPane: const ActionPane(
-        motion: ScrollMotion(),
+      key: ValueKey(item.id),
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
         children: [
-          // update delete
           SlidableAction(
             flex: 1,
-            onPressed: null,
+            onPressed: (context) {
+              confirmDelete();
+            },
             foregroundColor: Colors.red,
             icon: Icons.delete,
             label: 'Delete',
           ),
-
           SlidableAction(
             flex: 1,
-            onPressed: null,
+            onPressed: (context) {
+              Get.to(
+                () => const CreateItemView(),
+                binding: ItemBinding(),
+                arguments: item,
+              );
+            },
             foregroundColor: Colors.blue,
             icon: Icons.edit,
             label: 'Edit',
@@ -52,7 +65,7 @@ class ItemTileWidget extends StatelessWidget {
             width: 50,
             height: 50,
             child: CachedNetworkImage(
-              imageUrl: item.image!,
+              imageUrl: item.image ?? '',
               imageBuilder: (context, imageProvider) => Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -69,8 +82,8 @@ class ItemTileWidget extends StatelessWidget {
               ),
             ),
           ),
-          title:
-              Text(item.name!, style: Theme.of(context).textTheme.labelMedium),
+          title: Text(item.name ?? '',
+              style: Theme.of(context).textTheme.labelMedium),
           subtitle: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -82,7 +95,7 @@ class ItemTileWidget extends StatelessWidget {
                     ),
               ),
               Text(
-                'Stock: $stock',
+                'Stock: ${item.stock}',
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       color: Colors.grey.shade600,
                     ),
@@ -90,6 +103,53 @@ class ItemTileWidget extends StatelessWidget {
             ],
           ),
           onTap: () {},
+        ),
+      ),
+    );
+  }
+
+  void confirmDelete() {
+    Get.bottomSheet(
+      Container(
+        padding: const EdgeInsets.all(20),
+        color: Colors.white,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Confirm',
+              style: Theme.of(Get.context!).textTheme.labelLarge,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Are you sure you want to delete this item?',
+              style: Theme.of(Get.context!).textTheme.bodySmall,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                    child: XButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: const Text('Cancel'),
+                )),
+                const SizedBox(width: 10),
+                Expanded(
+                    child: XButton.outline(
+                  foregroundColor: Colors.red,
+                  borderSide: const BorderSide(color: Colors.red),
+                  onPressed: () {
+                    onDelete?.call();
+                    Get.back();
+                  },
+                  text: 'Delete',
+                )),
+              ],
+            ),
+          ],
         ),
       ),
     );

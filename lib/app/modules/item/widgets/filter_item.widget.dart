@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:mvvm_getx_pattern/app/commons/ui/buttons/x_button.dart';
-import 'package:mvvm_getx_pattern/app/enums/stock_enum.dart';
 
 class FilterItemWIdget extends StatelessWidget {
   const FilterItemWIdget({
@@ -40,18 +39,18 @@ class FilterItemWIdget extends StatelessWidget {
             ],
           ),
           const Divider(),
-          const SizedBox(height: 10),
-          const Text("Filter by Status"),
-          const SizedBox(height: 5),
-          DropdownButtonFormField(
-            items: [
-              ...StockItemStatus.values.map((e) => DropdownMenuItem(
-                    value: e,
-                    child: Text(e.name),
-                  ))
-            ],
-            onChanged: (value) {},
-          ),
+          //   const SizedBox(height: 10),
+          //   const Text("Filter by Status"),
+          //   const SizedBox(height: 5),
+          //   DropdownButtonFormField(
+          //     items: [
+          //       ...StockItemStatus.values.map((e) => DropdownMenuItem(
+          //             value: e,
+          //             child: Text(e.name),
+          //           ))
+          //     ],
+          //     onChanged: (value) {},
+          //   ),
           const SizedBox(height: 16),
           const Text("Filter by Category"),
           const SizedBox(height: 5),

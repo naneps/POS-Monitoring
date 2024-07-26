@@ -13,6 +13,8 @@ abstract class Routes {
   static const ITEM = _Paths.ITEM;
   static const EMPLOYE = _Paths.EMPLOYEE;
   Routes._();
+  static const CART = _Paths.CART;
+  static const CATEGORY = _Paths.CATEGORY;
 }
 
 abstract class _Paths {
@@ -27,4 +29,6 @@ abstract class _Paths {
   static const ITEM = '/item';
   static const EMPLOYEE = '/employee';
   _Paths._();
+  static const CART = '/cart';
+  static const CATEGORY = '/category';
 }
