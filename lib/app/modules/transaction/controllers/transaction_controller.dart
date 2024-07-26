@@ -3,6 +3,7 @@ import 'package:mvvm_getx_pattern/app/commons/utils/payment_calculator.dart';
 import 'package:mvvm_getx_pattern/app/models/cart_item.model.dart';
 import 'package:mvvm_getx_pattern/app/models/cart_model.dart';
 import 'package:mvvm_getx_pattern/app/models/item_model.dart';
+import 'package:mvvm_getx_pattern/app/modules/transaction/views/summary_transaction_view.dart';
 import 'package:mvvm_getx_pattern/app/repositories/item.repository.dart';
 
 class TransactionController extends GetxController {
@@ -24,7 +25,12 @@ class TransactionController extends GetxController {
     paymentCalculator.calculateSubtotal();
   }
 
-  void checkout() {}
+  void checkout() {
+    Get.to(
+      const SummaryTransactionView(),
+      arguments: cart.value,
+    );
+  }
 
   void getItems() async {
     try {

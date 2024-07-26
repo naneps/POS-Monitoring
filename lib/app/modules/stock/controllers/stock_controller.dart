@@ -28,6 +28,7 @@ class StockController extends GetxController with StateMixin<List<ItemModel>> {
   }
 
   void stockIn(ItemModel item) async {
+    print(item.toStockIn());
     await itemRepository.updateStockIn(item.toStockIn(), item.id.toString());
     getItems();
   }

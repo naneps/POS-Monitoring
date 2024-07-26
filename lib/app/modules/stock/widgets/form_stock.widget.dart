@@ -3,15 +3,16 @@ import 'package:get/get.dart';
 import 'package:mvvm_getx_pattern/app/commons/ui/buttons/x_button.dart';
 import 'package:mvvm_getx_pattern/app/commons/ui/inputs/inc_dec_input.dart';
 import 'package:mvvm_getx_pattern/app/models/item_model.dart';
+import 'package:mvvm_getx_pattern/app/modules/stock/controllers/stock_controller.dart';
 import 'package:mvvm_getx_pattern/app/modules/stock/widgets/item_stock_tile..wiget.dart';
 
-class FormStockWidget extends StatelessWidget {
+class FormStockWidget extends GetView<StockController> {
   final ItemModel item;
-  const FormStockWidget({
+  FormStockWidget({
     super.key,
     required this.item,
   });
-
+  int stock = 0;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -76,7 +77,8 @@ class FormStockWidget extends StatelessWidget {
                   maxValue: 10000000,
                   initialValue: item.stock!,
                   onChange: (value) {
-                    print(value);
+                    stock = value;
+                    item.stock = value - item.stock!;
                   },
                 ),
               ],
@@ -85,7 +87,9 @@ class FormStockWidget extends StatelessWidget {
           XButton(
             text: "Save Changes",
             fixedSize: Size(Get.width, 30),
-            onPressed: () {},
+            onPressed: () {
+              controller.stockIn(item);
+            },
           ),
         ],
       ),

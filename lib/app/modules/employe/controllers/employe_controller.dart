@@ -1,23 +1,27 @@
 import 'package:get/get.dart';
+import 'package:mvvm_getx_pattern/app/models/user_model.dart';
+import 'package:mvvm_getx_pattern/app/repositories/user_repository.dart';
 
 class EmployeController extends GetxController {
   //TODO: Implement EmployeController
-
-  final count = 0.obs;
+  RxList<UserModel> users = <UserModel>[].obs;
+  final userRepo = Get.find<UserRepository>();
   @override
   void onInit() {
+    // TODO: implement onInit
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void getUsers() async {
+    try {
+      final res = await userRepo.getUsers();
+      if (res.isEmpty) {
+        users.value = [];
+      } else {
+        users.value = res;
+      }
+    } catch (e) {
+      print(e);
+    }
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

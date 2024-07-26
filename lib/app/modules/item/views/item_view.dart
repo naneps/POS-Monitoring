@@ -24,65 +24,37 @@ class ItemView extends GetView<ItemController> {
         },
         child: const Icon(Icons.add),
       ),
+      appBar: AppBar(
+        title: const Text('Item'),
+        actions: [
+          IconButton(
+            icon: Icon(MdiIcons.filter),
+            onPressed: showFilter,
+          ),
+        ],
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+        ),
         child: RefreshIndicator(
           onRefresh: () async {
             controller.getItems();
           },
-          child: CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                backgroundColor: Colors.white,
-                centerTitle: true,
-                scrolledUnderElevation: 0,
-                title: const Text("Management Item"),
-                floating: true,
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      showFilter();
-                    },
-                    icon: const Icon(Icons.filter_list),
-                  ),
-                ],
-              ),
-              SliverAppBar(
-                floating: true,
-                toolbarHeight: 0,
-                shadowColor: Colors.transparent,
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-                surfaceTintColor: Colors.transparent,
-                collapsedHeight: 60,
-                snap: true,
-                pinned: true,
-                flexibleSpace: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: const TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search',
-                      prefixIcon: Icon(Icons.search),
-                    ),
-                  ),
+          child: Column(
+            children: [
+              const TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  prefixIcon: Icon(Icons.search),
                 ),
               ),
-              SliverToBoxAdapter(
-                child: Container(
-                  child: const Text(
-                    "All (100 items)",
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(
+              const SizedBox(height: 10),
+              Expanded(
                 child: controller.obx(
                   (state) {
                     return ListView.separated(
                       shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: controller.items.length,
                       separatorBuilder: (context, index) {
                         return const SizedBox(height: 5);
@@ -106,7 +78,7 @@ class ItemView extends GetView<ItemController> {
                       children: [
                         Icon(
                           MdiIcons.packageVariantClosed,
-                          color: Theme.of(context).colorScheme.onBackground,
+                          color: Theme.of(context).colorScheme.onSurface,
                           size: 60,
                         ),
                         const SizedBox(height: 10),
@@ -124,7 +96,7 @@ class ItemView extends GetView<ItemController> {
                         children: [
                           Icon(
                             MdiIcons.packageVariantClosed,
-                            color: Theme.of(context).colorScheme.onBackground,
+                            color: Theme.of(context).colorScheme.onSurface,
                             size: 60,
                           ),
                           const SizedBox(height: 10),

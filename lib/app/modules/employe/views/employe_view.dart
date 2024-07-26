@@ -18,57 +18,41 @@ class EmployeeView extends GetView<EmployeController> {
         },
         child: const Icon(Icons.add),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              backgroundColor: Colors.white,
-              centerTitle: true,
-              scrolledUnderElevation: 0,
-              title: const Text("Employee Management"),
-              floating: true,
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    // Show filter options
-                  },
-                  icon: const Icon(Icons.filter_list),
-                ),
-              ],
+      appBar: AppBar(
+        title: const Text('Users'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.filter_alt),
+            onPressed: () {
+              // Show filter options
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(
+              color: Colors.white,
             ),
-            SliverAppBar(
-              floating: true,
-              toolbarHeight: 0,
-              shadowColor: Colors.transparent,
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-              surfaceTintColor: Colors.transparent,
-              collapsedHeight: 60,
-              snap: true,
-              pinned: true,
-              flexibleSpace: Container(
-                padding: const EdgeInsets.all(10),
-                margin: const EdgeInsets.only(bottom: 10),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                ),
-                key: const Key('search-bar'),
-                child: const TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search',
-                    prefixIcon: Icon(Icons.search),
-                  ),
-                ),
+            key: const Key('search-bar'),
+            child: const TextField(
+              decoration: InputDecoration(
+                hintText: 'Search',
+                prefixIcon: Icon(Icons.search),
               ),
             ),
-            SliverGrid.builder(
+          ),
+          Expanded(
+            child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
               ),
               itemCount: 100,
+              shrinkWrap: true,
               itemBuilder: (context, index) {
                 return Container(
                   padding: const EdgeInsets.all(10),
@@ -109,8 +93,8 @@ class EmployeeView extends GetView<EmployeController> {
                 );
               },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

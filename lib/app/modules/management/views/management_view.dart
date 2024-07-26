@@ -10,9 +10,6 @@ class ManagementView extends GetView<ManagementController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Management Navigation'),
-      ),
       body: Obx(
         () => Padding(
           padding: const EdgeInsets.all(8.0),

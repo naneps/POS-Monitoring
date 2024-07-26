@@ -19,7 +19,7 @@ class ManagementController extends GetxController {
       activeIcon: MdiIcons.labelOutline,
     ),
     NavigationModel(
-      title: 'Employee Management',
+      title: 'User Management',
       route: Routes.EMPLOYE,
       icon: MdiIcons.accountGroup,
       activeIcon: MdiIcons.accountGroupOutline,

@@ -9,65 +9,41 @@ class StockView extends GetView<StockController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: RefreshIndicator(
-          onRefresh: () async {
-            controller.getItems();
-          },
-          child: CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                backgroundColor: Colors.white,
-                centerTitle: true,
-                scrolledUnderElevation: 0,
-                title: const Text("Stock Management"),
-                floating: true,
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      showFilter();
-                    },
-                    icon: const Icon(Icons.filter_list),
-                  ),
-                ],
+      appBar: AppBar(
+        title: const Text('Stock'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.filter_alt),
+            onPressed: showFilter,
+          ),
+        ],
+      ),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          controller.getItems();
+        },
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
+                color: Colors.white,
               ),
-              SliverAppBar(
-                floating: true,
-                toolbarHeight: 0,
-                shadowColor: Colors.transparent,
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-                surfaceTintColor: Colors.transparent,
-                collapsedHeight: 60,
-                snap: true,
-                pinned: true,
-                flexibleSpace: Container(
-                  padding: const EdgeInsets.all(10),
-                  margin: const EdgeInsets.only(bottom: 10),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  key: const Key('search-bar'),
-                  child: const TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search',
-                      prefixIcon: Icon(Icons.search),
-                    ),
-                  ),
+              key: const Key('search-bar'),
+              child: const TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  prefixIcon: Icon(Icons.search),
                 ),
               ),
-              SliverToBoxAdapter(
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: const Text(
-                    "All (100 items out of stock)",
-                  ),
-                ),
-              ),
-              controller.obx(
+            ),
+            Expanded(
+              child: controller.obx(
                 (context) {
-                  return SliverList.separated(
+                  return ListView.separated(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                    ),
                     itemCount: controller.items.length,
                     separatorBuilder: (context, index) {
                       return const SizedBox(height: 5);
@@ -78,26 +54,20 @@ class StockView extends GetView<StockController> {
                     },
                   );
                 },
-                onLoading: const SliverFillRemaining(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                onLoading: const Center(
+                  child: CircularProgressIndicator(),
                 ),
-                onEmpty: const SliverFillRemaining(
-                  child: Center(
-                    child: Text("No item found"),
-                  ),
+                onEmpty: const Center(
+                  child: Text("No item found"),
                 ),
                 onError: (error) {
-                  return SliverFillRemaining(
-                    child: Center(
-                      child: Text(error.toString()),
-                    ),
+                  return Center(
+                    child: Text(error.toString()),
                   );
                 },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
