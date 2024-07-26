@@ -48,6 +48,7 @@ class FormStockWidget extends StatelessWidget {
               canEdit: false,
             ),
           ),
+          const SizedBox(height: 10),
           Text.rich(
             TextSpan(
               children: [
@@ -65,17 +66,12 @@ class FormStockWidget extends StatelessWidget {
           ),
           Container(
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Colors.grey.shade300),
-            ),
+            decoration: const BoxDecoration(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text("Increase stock"),
                 IncDecInput(
-                  textSize: 14,
-                  iconSize: 30,
                   minValue: item.stock!,
                   maxValue: 10000000,
                   initialValue: item.stock!,

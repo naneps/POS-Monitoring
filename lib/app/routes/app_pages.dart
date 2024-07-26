@@ -2,6 +2,10 @@ import 'package:get/get.dart';
 
 import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/views/auth_view.dart';
+import '../modules/cart/bindings/cart_binding.dart';
+import '../modules/cart/views/cart_view.dart';
+import '../modules/category/bindings/category_binding.dart';
+import '../modules/category/views/category_view.dart';
 import '../modules/core/bindings/core_binding.dart';
 import '../modules/core/views/core_view.dart';
 import '../modules/dashboard/bindings/dashboard_binding.dart';
@@ -84,6 +88,16 @@ class AppPages {
       name: _Paths.EMPLOYEE,
       page: () => const EmployeeView(),
       binding: EmployeBinding(),
+    ),
+    GetPage(
+      name: _Paths.CART,
+      page: () => const CartView(),
+      binding: CartBinding(),
+    ),
+    GetPage(
+      name: _Paths.CATEGORY,
+      page: () => const CategoryView(),
+      binding: CategoryBinding(),
     ),
   ];
 

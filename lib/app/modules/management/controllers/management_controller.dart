@@ -11,6 +11,13 @@ class ManagementController extends GetxController {
       icon: MdiIcons.clipboardText,
       activeIcon: MdiIcons.clipboardTextOutline,
     ),
+    // category management
+    NavigationModel(
+      title: 'Category Management',
+      route: Routes.CATEGORY,
+      icon: MdiIcons.label,
+      activeIcon: MdiIcons.labelOutline,
+    ),
     NavigationModel(
       title: 'Employee Management',
       route: Routes.EMPLOYE,

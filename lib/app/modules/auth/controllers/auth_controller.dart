@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:mvvm_getx_pattern/app/commons/ui/painters/loading_dialog.dart';
-import 'package:mvvm_getx_pattern/app/models/user.model.dart';
+import 'package:mvvm_getx_pattern/app/commons/ui/overlays/loading_dialog.dart';
+import 'package:mvvm_getx_pattern/app/models/user_model.dart';
+import 'package:mvvm_getx_pattern/app/repositories/auth.repository.dart';
 import 'package:mvvm_getx_pattern/app/routes/app_pages.dart';
 
 class AuthController extends GetxController
@@ -13,13 +14,20 @@ class AuthController extends GetxController
   final formKey = GlobalKey<FormState>();
   final formKeyRegister = GlobalKey<FormState>();
   final storage = GetStorage();
+  final authRepository = Get.find<AuthRepository>();
   void login() async {
-    LoadingDialog.show(Get.context!);
-    Future.delayed(const Duration(seconds: 1), () {
-      LoadingDialog.hide(Get.context!);
-      storage.write('token', "xxx");
-      Get.offAllNamed(Routes.CORE);
-    });
+    try {
+      LoadingDialog.show(Get.context!);
+      final user = await authRepository.login(
+          this.user.value.phone!, this.user.value.password!);
+      if (user.id != null) {
+        Get.offAllNamed(Routes.CORE);
+      } else {
+        LoadingDialog.hide(Get.overlayContext!);
+      }
+    } catch (e) {
+      LoadingDialog.hide(Get.overlayContext!);
+    }
   }
 
   @override

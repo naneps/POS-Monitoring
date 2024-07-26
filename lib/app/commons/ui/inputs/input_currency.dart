@@ -24,7 +24,7 @@ class InputCurrency extends StatefulWidget {
   final TextEditingController? controller;
   final bool formatNumberWhenChanged;
   final void Function(String)? onChanged;
-
+  final String? Function(String?)? validator;
   const InputCurrency({
     super.key,
     this.label = 'Amount',
@@ -33,6 +33,7 @@ class InputCurrency extends StatefulWidget {
     this.controller,
     this.onChanged,
     this.formatNumberWhenChanged = true,
+    this.validator,
   });
 
   @override
@@ -65,6 +66,7 @@ class _InputCurrencyState extends State<InputCurrency> {
           }
         }
       },
+      validator: widget.validator,
       decoration: InputDecoration(
         labelText: widget.label,
         prefixText: '${widget.currencyType.symbol} ',

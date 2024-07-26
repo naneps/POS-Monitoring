@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:get/get.dart';
+import 'package:mvvm_getx_pattern/app/services/api.service.dart';
 
 class BaseProvider extends GetConnect {
   void handleRequestError(dynamic error) {
@@ -32,10 +33,9 @@ class BaseProvider extends GetConnect {
   @override
   void onInit() {
     super.onInit();
-    httpClient.baseUrl = 'https://jsonplaceholder.typicode.com';
-
+    httpClient.baseUrl = ApiService.baseUrl;
     httpClient.addRequestModifier<dynamic>((request) {
-      request.headers['Authorization'] = 'Bearer yourToken';
+      request.headers['Authorization'] = 'Bearer ${ApiService.token}';
       return request;
     });
 

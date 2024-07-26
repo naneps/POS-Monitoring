@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mvvm_getx_pattern/app/commons/ui/painters/scalled_dialog.dart';
+import 'package:mvvm_getx_pattern/app/commons/ui/overlays/scalled_dialog.dart';
 import 'package:mvvm_getx_pattern/app/enums/stock_enum.dart';
 import 'package:mvvm_getx_pattern/app/models/item_model.dart';
 import 'package:mvvm_getx_pattern/app/modules/stock/widgets/form_stock.widget.dart';
@@ -31,7 +31,7 @@ class ItemStockTileWidget extends StatelessWidget {
           width: 50,
           height: 50,
           child: CachedNetworkImage(
-            imageUrl: item.image!,
+            imageUrl: item.image ?? '',
             imageBuilder: (context, imageProvider) => Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
