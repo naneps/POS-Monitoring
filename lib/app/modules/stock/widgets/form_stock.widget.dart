@@ -8,11 +8,11 @@ import 'package:mvvm_getx_pattern/app/modules/stock/widgets/item_stock_tile..wig
 
 class FormStockWidget extends GetView<StockController> {
   final ItemModel item;
+  int stock = 0;
   FormStockWidget({
     super.key,
     required this.item,
   });
-  int stock = 0;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,12 +73,12 @@ class FormStockWidget extends GetView<StockController> {
               children: [
                 const Text("Increase stock"),
                 IncDecInput(
-                  minValue: item.stock!,
+                  minValue: 1,
                   maxValue: 10000000,
-                  initialValue: item.stock!,
+                  initialValue: 1,
                   onChange: (value) {
                     stock = value;
-                    item.stock = value - item.stock!;
+                    item.stock = value;
                   },
                 ),
               ],

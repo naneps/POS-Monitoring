@@ -1,10 +1,53 @@
+import 'package:get/get.dart';
+import 'package:mvvm_getx_pattern/app/commons/ui/overlays/loading_dialog.dart';
+import 'package:mvvm_getx_pattern/app/commons/ui/overlays/x_snack_bar.dart';
 import 'package:mvvm_getx_pattern/app/models/user.provider.dart';
+import 'package:mvvm_getx_pattern/app/models/user_model.dart';
+import 'package:mvvm_getx_pattern/app/modules/employe/controllers/employe_controller.dart';
 
 class UserRepository {
   final userProvider = UserProvider();
+  List<UserModel> users = [];
+  Future<void> createUser(Map<String, dynamic> data) async {
+    try {
+      LoadingDialog.show(Get.context!);
+      final res = await userProvider.createUser(data);
+      print(res.body);
+      Future.delayed(
+        const Duration(milliseconds: 500),
+        () {
+          if (res.statusCode == 201) {
+            XSnackBar.show(
+              context: Get.context!,
+              message: "Item created successfully",
+              type: SnackBarType.success,
+            );
+          } else {
+            XSnackBar.show(
+              context: Get.context!,
+              message: "Failed to create item",
+              type: SnackBarType.error,
+            );
+          }
+        },
+      );
+      LoadingDialog.hide(Get.overlayContext!);
+      Get.back();
+      Get.find<EmployeController>().getUsers();
+    } catch (e) {
+      print(e);
+      LoadingDialog.hide(Get.overlayContext!);
+    } finally {}
+  }
 
-  FutureList<UserModel> getUsers() async {
+  Future<List<UserModel>> getUsers() async {
     final res = await userProvider.getUsers();
-    return res;
+    if (res.body['data'] != null) {
+      final data = res.body['data'] as List;
+      users = data.map((e) => UserModel.fromJson(e)).toList();
+    } else {
+      users = [];
+    }
+    return users;
   }
 }

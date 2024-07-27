@@ -1,23 +1,24 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mvvm_getx_pattern/app/models/user_model.dart';
+import 'package:mvvm_getx_pattern/app/repositories/user_repository.dart';
 
 class CreateEmployeeController extends GetxController {
-  //TODO: Implement CreateEmployeeController
+  final userRepo = Get.find<UserRepository>();
+  Rx<UserModel> user = UserModel().obs;
+  final formKey = GlobalKey<FormState>();
+  void createUser() async {
+    try {
+      await userRepo.createUser(user.value.toCreateUser());
+    } catch (e) {
+      print(e);
+    }
+  }
 
-  final count = 0.obs;
   @override
   void onInit() {
+    // TODO: implement onInit
     super.onInit();
+    user.value = UserModel();
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

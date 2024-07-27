@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mvvm_getx_pattern/app/modules/employe/bindings/employe_binding.dart';
 import 'package:mvvm_getx_pattern/app/modules/employe/views/create_employee_view.dart';
 
 import '../controllers/employe_controller.dart';
@@ -14,7 +15,10 @@ class EmployeeView extends GetView<EmployeController> {
         heroTag: "create_employee",
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
         onPressed: () {
-          Get.to(const CreateEmployeeView());
+          Get.to(
+            const CreateEmployeeView(),
+            binding: EmployeBinding(),
+          );
         },
         child: const Icon(Icons.add),
       ),

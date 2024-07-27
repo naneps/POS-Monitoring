@@ -2,16 +2,18 @@ import 'package:get/get.dart';
 import 'package:mvvm_getx_pattern/app/commons/ui/inputs/input_currency.dart';
 import 'package:mvvm_getx_pattern/app/commons/utils/input_currenrcy_formatter.dart';
 import 'package:mvvm_getx_pattern/app/models/cart_item.model.dart';
+import 'package:mvvm_getx_pattern/app/services/api.service.dart';
 
 class CartModel {
   static CartModel get defaultCart => CartModel(
         id: null,
-        customerName: '',
+        customerName: 'Guest',
         subtotal: 0.obs,
         grandTotal: 0.obs,
         discount: 0.obs,
         tax: 0.obs,
         charge: 0.obs,
+        customerPhone: '',
         change: 0.obs,
         items: <CartItemModel>[].obs,
       );
@@ -23,18 +25,18 @@ class CartModel {
   RxInt? discount;
   RxInt? tax;
   RxInt? charge;
-
+  String? customerPhone;
   RxInt? change;
-
   RxList<CartItemModel>? items = <CartItemModel>[].obs;
   CartModel({
     this.id,
-    this.customerName,
+    this.customerName = 'Guest',
     this.subtotal,
     this.grandTotal,
     this.discount,
     this.tax,
     this.charge,
+    this.customerPhone,
     this.change,
     this.items,
   });
@@ -66,6 +68,19 @@ class CartModel {
         CurrencyType.idr,
         withSymbol: true,
       ).formatValue(tax!.value.toString());
+  toCreate() {
+    return {
+      "id_user": ApiService().uId,
+      //   "customer_name": customerName,
+      //   "subtotal": subtotal!.value,
+      //   "grand_total": grandTotal!.value,
+      //   "charge": charge!.value,
+      //   "customer_phone": customerPhone,
+      //   "change": change!.value,
+      "items": items!.map((e) => e.toCreate()).toList(),
+    };
+  }
+
   @override
   String toString() => 'CartModel(id: $id)';
 }

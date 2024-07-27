@@ -40,6 +40,11 @@ class BaseProvider extends GetConnect {
     });
 
     httpClient.addResponseModifier<dynamic>((request, response) {
+      print(response);
+      print("Response body: ${response.body}");
+      print("Response status code: ${response.statusCode}");
+      print("Response headers: ${response.headers}");
+      print(response.body);
       handleResponseError(response);
       return response;
     });

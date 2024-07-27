@@ -61,6 +61,7 @@ class ListItem extends GetView<TransactionController> {
                           trailing: IconButton(
                             onPressed: () {
                               //   controller.deleteItem(item);
+                              if (item.stock! < 1) return;
                               controller.addItemToCart(
                                 CartItemModel(
                                   id: item.id,

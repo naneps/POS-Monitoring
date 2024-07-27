@@ -28,7 +28,7 @@ class SummaryTransactionView extends GetView<SummaryTransactionController> {
         // back
         ElevatedButton(
           style: ButtonStyle(
-            fixedSize: WidgetStateProperty.all(
+            fixedSize: MaterialStatePropertyAll(
               Size(Get.width, 40),
             ),
           ),
@@ -40,10 +40,10 @@ class SummaryTransactionView extends GetView<SummaryTransactionController> {
         // print
         ElevatedButton(
           style: ButtonStyle(
-            fixedSize: WidgetStateProperty.all(
+            fixedSize: MaterialStatePropertyAll(
               Size(Get.width, 40),
             ),
-            backgroundColor: WidgetStateProperty.all(Colors.green[300]),
+            backgroundColor: MaterialStatePropertyAll(Colors.green[300]),
           ),
           onPressed: () {
             // controller.print();
