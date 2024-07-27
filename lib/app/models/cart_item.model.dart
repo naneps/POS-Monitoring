@@ -7,4 +7,11 @@ class CartItemModel {
   ItemModel? item;
 
   CartItemModel({this.id, this.qty, this.item});
+
+  toCreate() {
+    return {
+      "id_barang": item?.id.toString(),
+      "qty": qty!.value,
+    };
+  }
 }

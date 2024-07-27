@@ -17,6 +17,7 @@ class AuthRepository {
           final user = res.body['user'];
           final data = res.body['data'];
           ApiService().setToken(data['accessToken']);
+          ApiService().setUid(user['id_user'].toString());
           XSnackBar.show(
             context: Get.context!,
             message: data['message'],

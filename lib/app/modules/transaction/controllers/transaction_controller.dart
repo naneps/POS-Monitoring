@@ -1,10 +1,11 @@
 import 'package:get/get.dart';
+import 'package:mvvm_getx_pattern/app/commons/ui/overlays/x_snack_bar.dart';
 import 'package:mvvm_getx_pattern/app/commons/utils/payment_calculator.dart';
 import 'package:mvvm_getx_pattern/app/models/cart_item.model.dart';
 import 'package:mvvm_getx_pattern/app/models/cart_model.dart';
 import 'package:mvvm_getx_pattern/app/models/item_model.dart';
-import 'package:mvvm_getx_pattern/app/modules/transaction/views/summary_transaction_view.dart';
 import 'package:mvvm_getx_pattern/app/repositories/item.repository.dart';
+import 'package:mvvm_getx_pattern/app/repositories/transaction_repository.dart';
 
 class TransactionController extends GetxController {
   RxList<ItemModel> items = <ItemModel>[].obs;
@@ -12,6 +13,7 @@ class TransactionController extends GetxController {
   Rx<CartModel> cart = CartModel.defaultCart.obs;
   PaymentCalculator paymentCalculator =
       PaymentCalculator(cart: CartModel.defaultCart);
+  final transactionRepo = Get.find<TransactionRepository>();
   void addItemToCart(CartItemModel cartItem) {
     final existingItem = cart.value.items!.firstWhere(
         (element) => element.item?.id == cartItem.item?.id,
@@ -25,11 +27,21 @@ class TransactionController extends GetxController {
     paymentCalculator.calculateSubtotal();
   }
 
-  void checkout() {
-    Get.to(
-      const SummaryTransactionView(),
-      arguments: cart.value,
-    );
+  void calculateChange() {
+    paymentCalculator.calculateChange();
+  }
+
+  void checkout() async {
+    if (isCartValid()) {
+      await transactionRepo.createTransaction(cart.value.toCreate());
+      print(cart.value.toCreate());
+    } else {
+      XSnackBar.show(
+        context: Get.context!,
+        message: 'Cart is not valid , please add item to cart',
+        type: SnackBarType.error,
+      );
+    }
   }
 
   void getItems() async {
@@ -45,11 +57,27 @@ class TransactionController extends GetxController {
     }
   }
 
+  bool isCartValid() {
+    final isCartEmpty = cart.value.items!.isEmpty;
+    final hasZeroSubtotal = cart.value.subtotal!.value == 0;
+    final chargeIsLessThanGrandTotal =
+        cart.value.charge!.value < cart.value.grandTotal!.value;
+
+    return !(isCartEmpty || (hasZeroSubtotal && chargeIsLessThanGrandTotal));
+  }
+
   @override
   void onInit() {
     super.onInit();
     paymentCalculator.cart = cart.value;
     getItems();
+    ever(cart.value.items!, (callback) {
+      for (CartItemModel item in cart.value.items!) {
+        ever(item.qty!, (callback) {
+          paymentCalculator.calculateSubtotal();
+        });
+      }
+    });
   }
 
   void removeItemFromCart(CartItemModel cartItem) {

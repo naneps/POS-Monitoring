@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:mvvm_getx_pattern/app/commons/ui/buttons/x_button.dart';
+import 'package:mvvm_getx_pattern/app/commons/ui/inputs/x_input.dart';
 import 'package:mvvm_getx_pattern/app/modules/transaction/views/list_item.dart';
 import 'package:mvvm_getx_pattern/app/modules/transaction/views/summary_cart.dart';
+import 'package:mvvm_getx_pattern/app/modules/transaction/widgets/cart_item_tile.dart';
+import 'package:mvvm_getx_pattern/app/modules/transaction/widgets/payment_cash.widget.dart';
 
 import '../controllers/transaction_controller.dart';
 
@@ -45,6 +49,7 @@ class TransactionView extends GetView<TransactionController> {
                 () => controller.cart.value.items!.isEmpty
                     ? Container(
                         width: Get.width,
+                        height: Get.height,
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey.shade300),
                         ),
@@ -66,81 +71,127 @@ class TransactionView extends GetView<TransactionController> {
                         itemCount: controller.cart.value.items!.length,
                         itemBuilder: (context, index) {
                           final item = controller.cart.value.items![index];
-                          return Obx(() {
-                            return ListTile(
-                              leading: Icon(MdiIcons.packageVariantClosed),
-                              title: Text(item.item!.name!),
-                              subtitle: Text(item.item!.formattedPrice),
-                              trailing: SizedBox(
-                                  width: 120,
-                                  child: Row(
-                                    children: [
-                                      IconButton(
-                                        padding: const EdgeInsets.all(0),
-                                        style: ButtonStyle(
-                                          fixedSize: MaterialStateProperty.all(
-                                              const Size(20, 20)),
-                                          padding: MaterialStateProperty.all(
-                                              const EdgeInsets.all(0)),
-                                        ),
-                                        onPressed: () {
-                                          item.qty!.value--;
-                                          if (item.qty!.value == 0) {
-                                            controller.removeItemFromCart(item);
-                                          }
-                                        },
-                                        icon: Icon(
-                                          item.qty!.value == 1
-                                              ? MdiIcons.trashCanOutline
-                                              : MdiIcons.minus,
-                                          color: item.qty!.value == 1
-                                              ? Colors.red
-                                              : Get.theme.primaryColor,
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 20,
-                                        height: 20,
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            item.qty!.value.toString(),
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      IconButton(
-                                        style: ButtonStyle(
-                                          fixedSize: MaterialStateProperty.all(
-                                              const Size(20, 20)),
-                                          padding: MaterialStateProperty.all(
-                                              const EdgeInsets.all(0)),
-                                        ),
-                                        onPressed: () {
-                                          item.qty!.value++;
-                                        },
-                                        icon: Icon(MdiIcons.plus),
-                                      ),
-                                    ],
-                                  )),
-                            );
-                          });
+
+                          return CartItemTile(
+                            item: item,
+                            onRemove: () {
+                              controller.cart.value.items!.remove(item);
+                            },
+                          );
                         },
                       ),
               ),
             ),
+            const PaymentCashWidget(),
+            const SizedBox(height: 10),
+            Obx(() {
+              return Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                width: Get.width,
+                child: ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.person),
+                  trailing: IconButton(
+                    onPressed: () {},
+                    visualDensity: const VisualDensity(
+                      horizontal: -4,
+                      vertical: -4,
+                    ),
+                    icon: InkWell(
+                      onTap: () {
+                        showCustomerForm();
+                      },
+                      child: Icon(
+                        MdiIcons.pencil,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                  title: Text(
+                    controller.cart.value.customerName!,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  subtitle: Text(
+                    controller.cart.value.customerPhone ?? '',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  visualDensity: const VisualDensity(
+                    horizontal: -4,
+                    vertical: -4,
+                  ), // customer name
+                ),
+              );
+            }),
             const SummaryCart()
           ],
         ),
       ),
     );
+  }
+
+  showCustomerForm() {
+    final formKey = GlobalKey<FormState>();
+    Get.bottomSheet(Container(
+      width: Get.width,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: Form(
+        key: formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Text(
+                  "Customer",
+                  style: Theme.of(Get.context!).textTheme.labelMedium,
+                ),
+                const Spacer(),
+                InkWell(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: const Icon(Icons.close),
+                ),
+              ],
+            ),
+            const Divider(),
+            XInput(
+              label: "Name",
+              initialValue: controller.cart.value.customerName,
+              onSaved: (value) {
+                controller.cart.value.customerName = value;
+              },
+            ),
+            const SizedBox(height: 10),
+            XInput(
+              label: "Phone",
+              initialValue: controller.cart.value.customerPhone,
+              onSaved: (value) {
+                controller.cart.value.customerPhone = value;
+              },
+            ),
+            const SizedBox(height: 10),
+            XButton(
+                fixedSize: Size(Get.width, 50),
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    formKey.currentState!.save();
+                    controller.cart.refresh();
+                    Get.back();
+                  }
+                },
+                text: "Save"),
+          ],
+        ),
+      ),
+    ));
   }
 
   showItem() {

@@ -1,3 +1,5 @@
+import 'package:mvvm_getx_pattern/app/enums/role.enum.dart';
+
 class RoleModel {
   int? id;
   String? name;
@@ -18,6 +20,7 @@ class UserModel {
   String? password;
   String? token;
   RoleModel? role;
+  Role? roleName;
   UserModel({
     this.id,
     this.name,
@@ -27,6 +30,7 @@ class UserModel {
     this.password,
     this.token,
     this.role,
+    this.roleName,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -46,6 +50,7 @@ class UserModel {
     String? password,
     String? token,
     RoleModel? role,
+    Role? roleName,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -56,7 +61,17 @@ class UserModel {
       password: password ?? this.password,
       token: token ?? this.token,
       role: role ?? this.role,
+      roleName: roleName ?? this.roleName,
     );
+  }
+
+  toCreateUser() {
+    return {
+      "nama": name,
+      "nomor_telepon": phone,
+      "password": password,
+      "role_id": roleName!.id,
+    };
   }
 
   @override

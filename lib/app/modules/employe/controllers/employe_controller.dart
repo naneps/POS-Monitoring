@@ -6,12 +6,6 @@ class EmployeController extends GetxController {
   //TODO: Implement EmployeController
   RxList<UserModel> users = <UserModel>[].obs;
   final userRepo = Get.find<UserRepository>();
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-  }
-
   void getUsers() async {
     try {
       final res = await userRepo.getUsers();
@@ -23,5 +17,11 @@ class EmployeController extends GetxController {
     } catch (e) {
       print(e);
     }
+  }
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
   }
 }
