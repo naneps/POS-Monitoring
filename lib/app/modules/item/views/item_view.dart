@@ -43,24 +43,26 @@ class ItemView extends GetView<ItemController> {
           },
           child: Column(
             children: [
-              const TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  prefixIcon: Icon(Icons.search),
-                ),
-              ),
+              TextField(
+                  decoration: const InputDecoration(
+                    hintText: 'Search',
+                    prefixIcon: Icon(Icons.search),
+                  ),
+                  onChanged: (value) {
+                    controller.searchTerm.value = value;
+                  }),
               const SizedBox(height: 10),
               Expanded(
                 child: controller.obx(
                   (state) {
                     return ListView.separated(
                       shrinkWrap: true,
-                      itemCount: controller.items.length,
+                      itemCount: controller.filteredItems.length,
                       separatorBuilder: (context, index) {
                         return const SizedBox(height: 5);
                       },
                       itemBuilder: (context, index) {
-                        final item = controller.items[index];
+                        final item = controller.filteredItems[index];
                         return ItemTileWidget(
                           key: ValueKey(item.id),
                           item: item,

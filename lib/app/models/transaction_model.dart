@@ -11,6 +11,7 @@ class TransactionModel {
   int? returnAmount;
   String? statusTransaksi;
   String? tanggalTransaksi;
+  String? shift;
 
   TransactionModel({
     this.idTransaksi,
@@ -21,6 +22,7 @@ class TransactionModel {
     this.statusTransaksi,
     this.tanggalTransaksi,
     this.inAmount,
+    this.shift,
     this.returnAmount,
   });
 
@@ -38,6 +40,7 @@ class TransactionModel {
       returnAmount: json['return_amount'] ?? 0,
       statusTransaksi: json['status_transaksi'],
       tanggalTransaksi: json['tanggal_transaksi'],
+      shift: json['nama_shift'],
     );
   }
 

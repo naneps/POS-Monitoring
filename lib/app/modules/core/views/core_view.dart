@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -19,10 +18,10 @@ class CoreView extends GetView<CoreController> {
               Obx(() {
                 return ListTile(
                   leading: CircleAvatar(
-                    child: CachedNetworkImage(
-                      imageUrl: "",
-                    ),
-                  ),
+                      child: Icon(
+                    MdiIcons.account,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  )),
                   dense: true,
                   title: Text(
                     controller.user.value.name ?? '',

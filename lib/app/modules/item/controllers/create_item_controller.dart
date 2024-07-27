@@ -11,6 +11,7 @@ class CreateItemController extends GetxController {
   RxBool isEdit = false.obs;
   Rx<ItemModel> item = ItemModel().obs;
   RxList<CategoryModel> categories = <CategoryModel>[].obs;
+  RxString search = ''.obs;
   void createItem() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();

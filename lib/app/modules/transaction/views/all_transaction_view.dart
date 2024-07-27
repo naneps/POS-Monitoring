@@ -12,11 +12,16 @@ class AllTransactionView extends GetView<ListTransactionController> {
         title: const Text('All Transaction'),
         centerTitle: true,
       ),
-      body: Container(
-        child: const Column(
-          children: [
-            Expanded(child: ListTransaction()),
-          ],
+      body: RefreshIndicator(
+        onRefresh: () async {
+          Get.find<ListTransactionController>().getTransactions();
+        },
+        child: Container(
+          child: const Column(
+            children: [
+              Expanded(child: ListTransaction()),
+            ],
+          ),
         ),
       ),
     );

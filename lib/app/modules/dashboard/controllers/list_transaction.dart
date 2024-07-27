@@ -26,7 +26,8 @@ class ListTransaction extends GetView<ListTransactionController> {
                 backgroundColor: Colors.white,
                 child: Text(transaction.idTransaksi.toString()),
               ),
-              title: Text("By ${transaction.namaUser}"),
+              title: Text(
+                  "By ${transaction.namaUser} | Shift ${transaction.shift ?? ''}"),
               subtitle: Text.rich(
                 TextSpan(
                   children: [

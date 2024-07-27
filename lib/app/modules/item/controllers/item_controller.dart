@@ -3,31 +3,46 @@ import 'package:mvvm_getx_pattern/app/models/item_model.dart';
 import 'package:mvvm_getx_pattern/app/repositories/item.repository.dart';
 
 class ItemController extends GetxController with StateMixin<List<ItemModel>> {
-  RxList<ItemModel> items = <ItemModel>[].obs;
   final itemRepository = Get.find<ItemRepository>();
-  void deleteItem(String id) async {
-    await itemRepository.deleteItem(id);
-    getItems();
-  }
-
-  void getItems() async {
-    try {
-      final res = await itemRepository.getItems();
-      if (res.isEmpty) {
-        change([], status: RxStatus.empty());
-      } else {
-        change(res, status: RxStatus.success());
-        items.assignAll(res);
-      }
-    } catch (e) {
-      change([], status: RxStatus.error(e.toString()));
-    }
-  }
+  RxList<ItemModel> items = <ItemModel>[].obs;
+  RxList<ItemModel> filteredItems = <ItemModel>[].obs;
+  RxString searchTerm = ''.obs;
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
+    getItems();
+    searchTerm.listen((value) {
+      filterItems();
+    });
+  }
+
+  void getItems() async {
+    final res = await itemRepository.getItems();
+    if (res.isEmpty) {
+      items.value = [];
+      filteredItems.value = [];
+      change(filteredItems, status: RxStatus.empty());
+    } else {
+      items.value = res;
+      filterItems();
+    }
+  }
+
+  void filterItems() {
+    if (searchTerm.isEmpty) {
+      filteredItems.value = items;
+    } else {
+      filteredItems.value = items
+          .where((item) =>
+              item.name!.toLowerCase().contains(searchTerm.value.toLowerCase()))
+          .toList();
+    }
+    change(filteredItems, status: RxStatus.success());
+  }
+
+  void deleteItem(String id) async {
+    await itemRepository.deleteItem(id);
     getItems();
   }
 }
