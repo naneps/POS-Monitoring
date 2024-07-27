@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mvvm_getx_pattern/app/modules/dashboard/controllers/list_transaction.dart';
-import 'package:mvvm_getx_pattern/app/modules/transaction/views/list_item.dart';
 
 class AllTransactionView extends GetView<ListTransactionController> {
   const AllTransactionView({super.key});
@@ -15,7 +14,9 @@ class AllTransactionView extends GetView<ListTransactionController> {
       ),
       body: Container(
         child: const Column(
-          children: [Expanded(child: ListItem())],
+          children: [
+            Expanded(child: ListTransaction()),
+          ],
         ),
       ),
     );
