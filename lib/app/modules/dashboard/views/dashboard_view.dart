@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:mvvm_getx_pattern/app/modules/dashboard/controllers/list_transaction.dart';
+import 'package:mvvm_getx_pattern/app/modules/transaction/views/all_transaction_view.dart';
 
 import '../controllers/dashboard_controller.dart';
 
@@ -17,110 +19,94 @@ class DashboardView extends GetView<DashboardController> {
         ),
         child: Column(
           children: [
-            StaggeredGrid.count(
-              crossAxisCount: 6,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              children: [
-                _buildTile(
-                  context,
-                  icon: MdiIcons.packageVariant,
-                  label: 'Items',
-                  value: '10',
-                  color: Colors.blue,
-                  crossAxisCellCount: 2,
-                  mainAxisCellCount: 2,
-                ),
-                // Sales Tile
-                _buildTile(
-                  context,
-                  icon: MdiIcons.cashMultiple,
-                  label: 'Sales Today',
-                  value: '\$1250',
-                  color: Colors.green,
-                  crossAxisCellCount: 2,
-                  mainAxisCellCount: 2,
-                ),
-                // Users Tile
-                _buildTile(
-                  context,
-                  icon: MdiIcons.accountGroup,
-                  label: 'Users',
-                  value: '200',
-                  color: Colors.purple,
-                  crossAxisCellCount: 2,
-                  mainAxisCellCount: 2,
-                ),
-                // Orders Tile
-                _buildTile(
-                  context,
-                  icon: MdiIcons.cart,
-                  label: 'Orders Today',
-                  value: '75',
-                  color: Colors.orange,
-                  crossAxisCellCount: 3,
-                  mainAxisCellCount: 2,
-                ),
-                _buildTile(
-                  context,
-                  icon: MdiIcons.packageVariantPlus,
-                  label: 'Item Out of Stock',
-                  value: '10',
-                  color: Colors.red,
-                  crossAxisCellCount: 3,
-                  mainAxisCellCount: 2,
-                ),
-              ],
-            ),
+            Obx(() {
+              return StaggeredGrid.count(
+                crossAxisCount: 6,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                children: [
+                  _buildTile(
+                    context,
+                    icon: MdiIcons.packageVariant,
+                    label: 'Items',
+                    value: controller.dashboardSummary.value.totalBarang
+                        .toString(),
+                    color: Colors.blue,
+                    crossAxisCellCount: 2,
+                    mainAxisCellCount: 2,
+                  ),
+                  // Sales Tile
+                  _buildTile(
+                    context,
+                    icon: MdiIcons.cart,
+                    label: 'Orders Today',
+                    value: controller.dashboardSummary.value.totalTransaksi
+                        .toString(),
+                    color: Colors.orange,
+                    crossAxisCellCount: 2,
+                    mainAxisCellCount: 2,
+                  ),
+                  // Users Tile
+                  _buildTile(
+                    context,
+                    icon: MdiIcons.accountGroup,
+                    label: 'Users',
+                    value: (controller.dashboardSummary.value.totalOfficer! +
+                            controller.dashboardSummary.value.totalOwner!)
+                        .toString(),
+                    color: Colors.purple,
+                    crossAxisCellCount: 2,
+                    mainAxisCellCount: 2,
+                  ),
+                  // Orders Tile
+                  _buildTile(
+                    context,
+                    icon: MdiIcons.cash,
+                    label: 'Sales Today',
+                    value: controller
+                        .dashboardSummary.value.totalTransaksiPaidFormatted
+                        .toString(),
+                    color: Colors.green,
+                    crossAxisCellCount: 3,
+                    mainAxisCellCount: 2,
+                  ),
+                  _buildTile(
+                    context,
+                    icon: MdiIcons.packageVariantPlus,
+                    label: 'Item Out of Stock',
+                    value: controller.dashboardSummary.value.totalOutOfStock
+                        .toString(),
+                    color: Colors.red,
+                    crossAxisCellCount: 3,
+                    mainAxisCellCount: 2,
+                  ),
+                ],
+              );
+            }),
             const SizedBox(height: 10),
             Expanded(
               child: Container(
                 child: Column(
                   children: [
-                    const Row(
+                    Row(
                       children: [
-                        Text("Order Today"),
-                        Spacer(),
+                        const Text("Order Today"),
+                        const Spacer(),
                         TextButton(
-                          onPressed: null,
-                          child: Text("View All"),
+                          onPressed: () {
+                            Get.to(
+                              const AllTransactionView(),
+                              fullscreenDialog: true,
+                              transition: Transition.rightToLeft,
+                            );
+                          },
+                          child: const Text("View All"),
                         )
                       ],
                     ),
                     // Order List
-                    Expanded(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 5,
-                            ),
-                            leading: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              child: Text("#$index"),
-                            ),
-                            title: Text("Jamal $index"),
-                            subtitle: Text.rich(
-                              TextSpan(
-                                children: [
-                                  // items
-                                  TextSpan(text: "$index Items"),
-                                  const TextSpan(text: " | "),
-
-                                  TextSpan(
-                                    text: "\$${index * 100}",
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            trailing: const Icon(Icons.chevron_right),
-                          );
-                        },
-                      ),
+                    const Expanded(
+                      child: ListTransaction(),
                     )
                   ],
                 ),

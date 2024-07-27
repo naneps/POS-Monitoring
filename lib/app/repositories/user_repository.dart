@@ -6,12 +6,15 @@ import 'package:mvvm_getx_pattern/app/models/user_model.dart';
 import 'package:mvvm_getx_pattern/app/modules/employe/controllers/employe_controller.dart';
 
 class UserRepository {
-  final userProvider = UserProvider();
+  final userProvider = Get.find<UserProvider>();
   List<UserModel> users = [];
+  Rx<UserModel> user = UserModel().obs;
   Future<void> createUser(Map<String, dynamic> data) async {
     try {
       LoadingDialog.show(Get.context!);
       final res = await userProvider.createUser(data);
+      print("CREATE USER: ");
+      print(data);
       print(res.body);
       Future.delayed(
         const Duration(milliseconds: 500),
@@ -42,12 +45,26 @@ class UserRepository {
 
   Future<List<UserModel>> getUsers() async {
     final res = await userProvider.getUsers();
+    print("GET USERS: ");
+    print(res.body);
     if (res.body['data'] != null) {
       final data = res.body['data'] as List;
-      users = data.map((e) => UserModel.fromJson(e)).toList();
+      users = data.map((e) => UserModel.fromUser(e)).toList();
     } else {
       users = [];
     }
     return users;
+  }
+
+  Future<UserModel> getUser() async {
+    final res = await userProvider.getUser();
+    print("GET USER: ");
+    print(res.body);
+    if (res.body['data'] != null) {
+      user.value = UserModel.fromUser(res.body['data']);
+    } else {
+      user.value = UserModel();
+    }
+    return user.value;
   }
 }

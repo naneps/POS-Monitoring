@@ -9,7 +9,10 @@ class CreateEmployeeController extends GetxController {
   final formKey = GlobalKey<FormState>();
   void createUser() async {
     try {
-      await userRepo.createUser(user.value.toCreateUser());
+      if (formKey.currentState!.validate()) {
+        formKey.currentState!.save();
+        await userRepo.createUser(user.value.toCreateUser());
+      }
     } catch (e) {
       print(e);
     }

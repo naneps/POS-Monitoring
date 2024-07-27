@@ -21,4 +21,13 @@ extension RoleExtension on Role {
         return "Officer";
     }
   }
+
+  fromJson(Map<String, dynamic> json) {
+    switch (json['role']) {
+      case 'owner':
+        return Role.owner;
+      case 'officer':
+        return Role.officer;
+    }
+  }
 }

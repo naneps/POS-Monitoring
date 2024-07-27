@@ -21,6 +21,7 @@ class UserModel {
   String? token;
   RoleModel? role;
   Role? roleName;
+  String? namaRole;
   UserModel({
     this.id,
     this.name,
@@ -39,6 +40,13 @@ class UserModel {
         phone: json['nomor_telepon'],
         password: json['password'],
         token: json['token'],
+      );
+
+  factory UserModel.fromUser(Map<String, dynamic> json) => UserModel(
+        id: json['id_user'],
+        name: json['nama'],
+        phone: json['nomor_telepon'],
+        roleName: json['role'] == "owner" ? Role.owner : Role.officer,
       );
 
   UserModel copyWith({

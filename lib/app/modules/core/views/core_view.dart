@@ -16,20 +16,22 @@ class CoreView extends GetView<CoreController> {
         drawer: Drawer(
           child: ListView(
             children: [
-              ListTile(
-                leading: CircleAvatar(
-                  child: CachedNetworkImage(
-                    imageUrl: "",
+              Obx(() {
+                return ListTile(
+                  leading: CircleAvatar(
+                    child: CachedNetworkImage(
+                      imageUrl: "",
+                    ),
                   ),
-                ),
-                dense: true,
-                title: const Text(
-                  "Jamal",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                subtitle: const Text("Pencabu"),
-                onTap: () {},
-              ),
+                  dense: true,
+                  title: Text(
+                    controller.user.value.name ?? '',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(controller.user.value.roleName!.name ?? ''),
+                  onTap: () {},
+                );
+              }),
               ...controller.navigation.map(
                 (e) => Obx(() {
                   return Container(

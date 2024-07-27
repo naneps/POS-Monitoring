@@ -11,7 +11,7 @@ class TransactionProvider extends BaseProvider {
   }
 
   Future<Response> getTransaction(String id) async {
-    return await post('/transaksi/$id/detail', {'id': id});
+    return await post('/transaksi/$id/detail_transaksi', {'id': id});
   }
 
   Future<Response> getTransactions() async {

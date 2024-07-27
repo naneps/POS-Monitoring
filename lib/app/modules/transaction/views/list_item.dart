@@ -12,6 +12,9 @@ class ListItem extends GetView<TransactionController> {
   Widget build(BuildContext context) {
     return GetBuilder(
         init: controller,
+        initState: (_) {
+          controller.getItems();
+        },
         builder: (ctrl) {
           return Container(
             padding: const EdgeInsets.all(10),
@@ -57,7 +60,8 @@ class ListItem extends GetView<TransactionController> {
                           selectedTileColor: Theme.of(context).primaryColor,
                           visualDensity: VisualDensity.compact,
                           title: Text(item.name!),
-                          subtitle: Text(item.formattedPrice),
+                          subtitle: Text(
+                              "${item.formattedPrice} | Stok ${item.stock}"),
                           trailing: IconButton(
                             onPressed: () {
                               //   controller.deleteItem(item);

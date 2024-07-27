@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mvvm_getx_pattern/app/models/stock_history.model.dart';
+import 'package:mvvm_getx_pattern/app/repositories/item.repository.dart';
 
 import '../controllers/history_stock_controller.dart';
 
@@ -9,6 +10,7 @@ class HistoryStockView extends GetView<HistoryStockController> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ItemRepository());
     return Scaffold(
       body: Column(
         children: [

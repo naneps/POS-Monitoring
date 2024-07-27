@@ -1,23 +1,21 @@
 import 'package:get/get.dart';
+import 'package:mvvm_getx_pattern/app/models/dashboard.model.dart';
+import 'package:mvvm_getx_pattern/app/repositories/dashboard.repository.dart';
 
 class DashboardController extends GetxController {
   //TODO: Implement DashboardController
+  Rx<DashboardSummaryModel> dashboardSummary = DashboardSummaryModel().obs;
+  final dashboardRepository = Get.find<DashboardRepository>();
 
-  final count = 0.obs;
+  void loadDummyData() {}
+
   @override
   void onInit() {
     super.onInit();
+    getDashboardSummary();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void getDashboardSummary() async {
+    dashboardSummary.value = await dashboardRepository.getDashboardSummary();
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

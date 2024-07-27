@@ -1,52 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-List<StockHistoryModel> dummyStockHistory = [
-  StockHistoryModel(
-    itemName: "Item 1",
-    category: StockHistoryType.stockIn,
-    quantity: "10",
-    time: "10:00 AM",
-    date: "2024-07-25",
-    author: "Author 1",
-  ),
-  StockHistoryModel(
-    itemName: "Item 2",
-    category: StockHistoryType.stockOut,
-    quantity: "5",
-    time: "11:00 AM",
-    date: "2024-07-25",
-    author: "Author 2",
-  ),
-  StockHistoryModel(
-    itemName: "Item 3",
-    category: StockHistoryType.stockIn,
-    quantity: "20",
-    time: "12:00 PM",
-    date: "2024-07-25",
-    author: "Author 3",
-  ),
-  // Add more dummy data as needed
-];
-
-class StockHistoryModel {
-  String? itemName;
-  StockHistoryType? category;
-  String? quantity;
-  String? time;
-  String? date;
-  String? author;
-
-  StockHistoryModel({
-    this.itemName,
-    this.category,
-    this.quantity,
-    this.time,
-    this.date,
-    this.author,
-  });
-}
-
+// Define the StockHistoryType enum with extensions
 enum StockHistoryType { stockIn, stockOut }
 
 extension StockHistoryTypeExtension on StockHistoryType {
@@ -79,4 +34,47 @@ extension StockHistoryTypeExtension on StockHistoryType {
 
   String get symbol => toString().split('.').last;
   String get value => toString().split('.').last;
+}
+
+// Define the StockHistoryModel class
+class StockHistoryModel {
+  String? itemName;
+  StockHistoryType? category;
+  String? quantity;
+  String? time;
+  String? date;
+  String? author;
+
+  StockHistoryModel({
+    this.itemName,
+    this.category,
+    this.quantity,
+    this.time,
+    this.date,
+    this.author,
+  });
+
+  // Method to create an instance from JSON
+  factory StockHistoryModel.fromJson(Map<String, dynamic> json) {
+    return StockHistoryModel(
+      itemName: json['barang'],
+      category: _getCategoryFromString(json['keterangan']),
+      quantity: json['qty']?.toString(),
+      time: json['tanggal']?.split(' ')?.last,
+      date: json['tanggal']?.substring(0, json['tanggal']?.lastIndexOf(' ')),
+      author: json['nama_officer'],
+    );
+  }
+
+  // Helper method to convert string to StockHistoryType
+  static StockHistoryType? _getCategoryFromString(String? category) {
+    switch (category) {
+      case 'IN':
+        return StockHistoryType.stockIn;
+      case 'OUT':
+        return StockHistoryType.stockOut;
+      default:
+        return StockHistoryType.stockOut;
+    }
+  }
 }

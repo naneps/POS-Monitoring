@@ -9,6 +9,7 @@ class SummaryTransactionView extends GetView<SummaryTransactionController> {
 
   @override
   get controller => Get.put(SummaryTransactionController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,9 +28,9 @@ class SummaryTransactionView extends GetView<SummaryTransactionController> {
       persistentFooterButtons: [
         // back
         ElevatedButton(
-          style: ButtonStyle(
-            fixedSize: MaterialStatePropertyAll(
-              Size(Get.width, 40),
+          style: const ButtonStyle(
+            fixedSize: WidgetStatePropertyAll(
+              Size(double.infinity, 40),
             ),
           ),
           onPressed: () {
@@ -40,10 +41,10 @@ class SummaryTransactionView extends GetView<SummaryTransactionController> {
         // print
         ElevatedButton(
           style: ButtonStyle(
-            fixedSize: MaterialStatePropertyAll(
-              Size(Get.width, 40),
+            fixedSize: const WidgetStatePropertyAll(
+              Size(double.infinity, 40),
             ),
-            backgroundColor: MaterialStatePropertyAll(Colors.green[300]),
+            backgroundColor: WidgetStatePropertyAll(Colors.green[300]),
           ),
           onPressed: () {
             // controller.print();
@@ -59,83 +60,82 @@ class SummaryTransactionView extends GetView<SummaryTransactionController> {
               color: Colors.white,
             ),
             padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                const Text(
-                  "Toko Jamal",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Text("Receipt No: 1234567890"),
-                const SummaryText(
-                  title: "Cashier",
-                  value: "Admin",
-                ),
-                const SummaryText(
-                  title: "Date",
-                  value: "2021-10-10",
-                ),
-                const SummaryText(
-                  title: "Time",
-                  value: "10:10:10",
-                ),
-                const Divider(),
-                Expanded(
-                  child: ListView.separated(
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(height: 5);
-                    },
-                    shrinkWrap: true,
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Colors.grey.shade300,
-                            ),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Item $index"),
-                                  const Text("Rp 10.000"),
-                                ],
+            child: Obx(() {
+              if (controller.transaction.value.idTransaksi == null) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                final transaction = controller.transaction.value;
+                return Column(
+                  children: [
+                    Text("Receipt No: ${transaction.idTransaksi}"),
+                    SummaryText(
+                      title: "Cashier",
+                      value: transaction.namaUser ?? "N/A",
+                    ),
+                    SummaryText(
+                      title: "Date",
+                      value: transaction.tanggalTransaksi ?? "N/A",
+                    ),
+                    const Divider(),
+                    Expanded(
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(height: 5);
+                        },
+                        shrinkWrap: true,
+                        physics: const ClampingScrollPhysics(),
+                        itemCount: transaction.details?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          final detail = transaction.details![index];
+                          return Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.grey.shade300,
+                                ),
                               ),
                             ),
-                            const Text("x1 | "),
-                            const Text("Rp 10.000"),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                const Divider(),
-                const SummaryText(
-                  title: "Total Transaction",
-                  value: "Rp 100.000",
-                ),
-                const SummaryText(
-                  title: "Total Item",
-                  value: "10",
-                ),
-                const SummaryText(
-                  title: "Total Payment",
-                  value: "Rp 100.000",
-                ),
-                const SummaryText(
-                  title: "Total Change",
-                  value: "Rp 0",
-                ),
-              ],
-            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(detail.nama ?? "Item $index"),
+                                      Text(detail.formattedAmount),
+                                    ],
+                                  ),
+                                ),
+                                Text("x${detail.qty} | "),
+                                Text(detail.formatTotalAmount),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    const Divider(),
+                    SummaryText(
+                      title: "Total Transaction",
+                      value: transaction.formattedTotalAmount,
+                    ),
+                    SummaryText(
+                      title: "Total Item",
+                      value: transaction.details?.length.toString() ?? "0",
+                    ),
+                    SummaryText(
+                      title: "Total Payment",
+                      value: transaction.formattedInAmount,
+                    ),
+                    SummaryText(
+                      title: "Total Change",
+                      value: transaction.formattedReturnAmount,
+                    ),
+                  ],
+                );
+              }
+            }),
           )
         ],
       ),

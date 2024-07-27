@@ -25,4 +25,8 @@ class ItemProvider extends BaseProvider {
   Future<Response> updateStockIn(Map<String, dynamic> data, String id) async {
     return await post('/master/barang/$id/in', data);
   }
+
+  Future<Response> getStockHistories() async {
+    return await post('/master/barang/history', {});
+  }
 }

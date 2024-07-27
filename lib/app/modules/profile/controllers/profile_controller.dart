@@ -1,23 +1,24 @@
 import 'package:get/get.dart';
+import 'package:mvvm_getx_pattern/app/models/user_model.dart';
+import 'package:mvvm_getx_pattern/app/repositories/user_repository.dart';
 
-class ProfileController extends GetxController {
-  //TODO: Implement ProfileController
+class ProfileController extends GetxController with StateMixin<UserModel> {
+  final userRepo = Get.find<UserRepository>();
+  Rx<UserModel> user = UserModel().obs;
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
+    getUser();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void getUser() async {
+    try {
+      user.value = await userRepo.getUser();
+      change(user.value, status: RxStatus.success());
+    } catch (e) {
+      print(e);
+      change(null, status: RxStatus.error(e.toString()));
+    }
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

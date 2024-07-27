@@ -33,8 +33,12 @@ class TransactionController extends GetxController {
 
   void checkout() async {
     if (isCartValid()) {
-      await transactionRepo.createTransaction(cart.value.toCreate());
-      print(cart.value.toCreate());
+      await transactionRepo
+          .createTransaction(cart.value.toCreate())
+          .then((res) {
+        if (res) {}
+      });
+      cart.value = CartModel.defaultCart;
     } else {
       XSnackBar.show(
         context: Get.context!,

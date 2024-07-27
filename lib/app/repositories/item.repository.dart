@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:mvvm_getx_pattern/app/commons/ui/overlays/loading_dialog.dart';
 import 'package:mvvm_getx_pattern/app/commons/ui/overlays/x_snack_bar.dart';
 import 'package:mvvm_getx_pattern/app/models/item_model.dart';
+import 'package:mvvm_getx_pattern/app/models/stock_history.model.dart';
 import 'package:mvvm_getx_pattern/app/modules/item/controllers/item_controller.dart';
 import 'package:mvvm_getx_pattern/app/providers/item_provider.dart';
 
@@ -9,6 +10,7 @@ class ItemRepository {
   List<ItemModel> items = <ItemModel>[];
   ItemModel item = ItemModel();
   final itemProvider = Get.find<ItemProvider>();
+  List<StockHistoryModel> stockHistories = [];
   Future<void> createItem(Map<String, dynamic> data) async {
     try {
       LoadingDialog.show(Get.context!);
@@ -114,5 +116,16 @@ class ItemRepository {
       );
     }
     Get.back();
+  }
+
+  Future<List<StockHistoryModel>> getStockHistories() async {
+    final res = await itemProvider.getStockHistories();
+    if (res.body['data'] != null) {
+      final data = res.body['data'] as List;
+      stockHistories = data.map((e) => StockHistoryModel.fromJson(e)).toList();
+    } else {
+      stockHistories = [];
+    }
+    return stockHistories;
   }
 }

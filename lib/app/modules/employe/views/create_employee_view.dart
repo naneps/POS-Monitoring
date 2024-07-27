@@ -28,12 +28,15 @@ class CreateEmployeeView extends GetView<CreateEmployeeController> {
             style: ElevatedButton.styleFrom(
               fixedSize: Size(Get.width, 50),
             ),
-            onPressed: () {},
+            onPressed: () {
+              controller.createUser();
+            },
             child: const Text("Save"),
           ),
         ),
         body: Obx(() {
           return Form(
+            key: controller.formKey,
             child: ListView(
               padding: const EdgeInsets.all(10),
               children: [

@@ -30,7 +30,7 @@ class TransactionView extends GetView<TransactionController> {
       persistentFooterButtons: [
         ElevatedButton(
           style: ButtonStyle(
-            fixedSize: MaterialStateProperty.all(
+            fixedSize: WidgetStateProperty.all(
               Size(Get.width, 40),
             ),
           ),

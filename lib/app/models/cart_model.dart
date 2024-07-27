@@ -70,13 +70,13 @@ class CartModel {
       ).formatValue(tax!.value.toString());
   toCreate() {
     return {
-      "id_user": ApiService().uId,
+      "id_user": ApiService().uId.toString(),
       //   "customer_name": customerName,
       //   "subtotal": subtotal!.value,
       //   "grand_total": grandTotal!.value,
-      //   "charge": charge!.value,
-      //   "customer_phone": customerPhone,
-      //   "change": change!.value,
+      "in_amount": charge!.value,
+      // "customer_phone": customerPhone,
+      "return_amount": change!.value,
       "items": items!.map((e) => e.toCreate()).toList(),
     };
   }

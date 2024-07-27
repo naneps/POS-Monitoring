@@ -1,5 +1,6 @@
 import 'package:mvvm_getx_pattern/app/commons/ui/inputs/input_currency.dart';
 import 'package:mvvm_getx_pattern/app/commons/utils/input_currenrcy_formatter.dart';
+import 'package:mvvm_getx_pattern/app/services/api.service.dart';
 
 class CategoryModel {
   int? id;
@@ -79,10 +80,7 @@ class ItemModel {
   }
 
   Map<String, dynamic> toStockIn() {
-    return {
-      "id_barang": id,
-      "qty": stock,
-    };
+    return {"id_barang": id, "qty": stock, "id_user": ApiService().uId};
   }
 
   @override
